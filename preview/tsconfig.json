@@ -1,12 +1,4 @@
 {
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "tests/**/*.ts",
-    "tests/**/*.tsx",
-    "playwright.config.ts",
-    "vitest.config.ts"
-  ],
   "compilerOptions": {
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
@@ -16,24 +8,22 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "module": "NodeNext",
-    "moduleDetection": "force",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "noEmit": true,
-    "noEmitOnError": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
     "noUncheckedSideEffectImports": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "resolveJsonModule": true,
+    "paths": {
+      "@rahulyadev/design-system": ["../src/index.ts"],
+      "@rahulyadev/design-system/theme": ["../src/theme/index.ts"]
+    },
     "skipLibCheck": false,
     "strict": true,
     "target": "ES2022",
-    "types": ["node", "vitest/globals"],
+    "types": ["vite/client"],
     "verbatimModuleSyntax": true
-  }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

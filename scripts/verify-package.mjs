@@ -190,11 +190,12 @@ for (const javascriptFile of javascriptFiles) {
 const outputText = await Promise.all(
   distFiles.map((file) => readFile(path.join(distDirectory, file), "utf8")),
 ).then((contents) => contents.join("\n"));
+const sourceRepositoryRoot = path.resolve(repositoryRoot, "..", "website");
 
 for (const forbiddenText of [
   ["rahuly", "theme", "preference"].join("-"),
   ["rahuly", "in"].join("."),
-  "/home/parry/projects/website",
+  sourceRepositoryRoot,
 ]) {
   assert(
     !outputText.includes(forbiddenText),
@@ -251,10 +252,14 @@ for (const exportValue of Object.values(packageJson.exports)) {
   }
 }
 
-const { stdout } = await execFile("npm", ["pack", "--dry-run", "--json"], {
-  cwd: repositoryRoot,
-  encoding: "utf8",
-});
+const { stdout } = await execFile(
+  "npm",
+  ["pack", "--dry-run", "--json", "--loglevel=error"],
+  {
+    cwd: repositoryRoot,
+    encoding: "utf8",
+  },
+);
 const packResults = JSON.parse(stdout);
 assert(
   Array.isArray(packResults) && packResults.length === 1,

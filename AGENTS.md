@@ -8,7 +8,9 @@
 - Export only documented root, theme, CSS, and package metadata subpaths. Do not expose internal helpers or deep component paths.
 - CSS remains opt-in. Separate imports use tokens, base, then primitives order; JavaScript must not import CSS.
 - Do not add authentication, AWS, deployment, routes, content, SEO, or business logic.
-- Run `npm run verify` and `npm run pack:dry-run` for complete local verification.
+- Run `npm run verify` and `npm run pack:dry-run` for package checks; run `npm run verify:full` for packed consumers plus digest-pinned browser and visual comparison checks.
+- Use container-backed browser commands on hosts without Playwright system libraries. The wrapper must retain its strict operation allowlist, repository-only mount, host UID/GID mapping, and digest-pinned image.
+- Update visual baselines only with `npm run test:visual:update:container`, inspect every required PNG, then require two immediate `npm run test:visual:container` passes.
 - Do not weaken tests to conceal failures.
 - Do not publish, tag, release, push, commit, perform destructive actions, or change repository settings without authorization.
 - Public documentation uses normal engineering language.

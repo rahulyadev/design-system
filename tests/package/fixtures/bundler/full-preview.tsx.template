@@ -1,0 +1,37 @@
+import { createRoot } from "react-dom/client";
+
+import {
+  Badge,
+  Button,
+  Card,
+  Container,
+  IconButton,
+  LinkButton,
+  Section,
+  SectionHeading,
+} from "@rahulyadev/design-system";
+import {
+  ThemeProvider,
+  ThemeToggle,
+} from "@rahulyadev/design-system/theme";
+import "@rahulyadev/design-system/styles.css";
+
+const root = document.createElement("div");
+document.body.append(root);
+
+createRoot(root).render(
+  <ThemeProvider storageKey="packed-bundler-theme">
+    <Container>
+      <Section>
+        <SectionHeading title="Full preview" />
+        <Card>
+          <Badge>Packed</Badge>
+          <Button>Button</Button>
+          <LinkButton href="#target">Link</LinkButton>
+          <IconButton aria-label="Icon">+</IconButton>
+          <ThemeToggle />
+        </Card>
+      </Section>
+    </Container>
+  </ThemeProvider>,
+);

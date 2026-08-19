@@ -44,4 +44,6 @@ The default theme storage key is domain-neutral. A consumer-specific key may be 
 
 Consumers own routes, content, SEO, authentication, APIs, application shell composition, infrastructure, and deployment. The package does not provide those concerns.
 
-Packed-artifact and public-export tests are required before release. There is no release, browser-support, portfolio-equivalence, provenance, or packed-consumer compatibility claim yet. Future consumer handoffs must include a tested rollback procedure and the prior known-good package version.
+Local packed-artifact checks install the tarball into clean React 18.3.1 and React 19.2.8 consumers with TypeScript 6.0.3 and Vite 8.2.1. They validate public declarations and exports, strict NodeNext and Bundler compilation, SSR, all CSS subpaths, deep-import rejection, no automatic CSS, and one physical React and React DOM installation. The public-import-only packed preview adds local hydration and browser evidence described in [Testing](testing.md).
+
+There is no registry, hosted workflow, portfolio-equivalence, provenance, publication, deployment, release, or consumer rollback evidence. A future consumer handoff must include a tested rollback procedure and the prior known-good package version.

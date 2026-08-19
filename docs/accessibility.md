@@ -20,4 +20,6 @@ Consumers must provide meaningful accessible names, choose correct button intent
 
 Do not remove the package focus treatment without an equivalent replacement.
 
-Browser-level verification is scheduled for the next phase. This repository has not yet completed axe, browser, 320px viewport, 200% text, forced-colors browser, or no-JavaScript browser verification.
+Local browser automation covers Chromium 151.0.7922.34, Firefox 153.0, and WebKit 26.5 in the digest-pinned Playwright 1.62.1 image. The packed preview has zero unresolved axe violations in light, dark, system, desktop, and 320px cases; engine-specific projects exercise keyboard order, focus treatment, radiogroup navigation, tooltip association, 44 CSS-pixel targets, reduced motion, responsive layouts, no JavaScript, and a 200% text-size proxy. Forced-colors behavior is exercised in Chromium, the engine used for that emulation.
+
+Automation does not replace human inspection, assistive-technology testing, real browser zoom, operating-system text scaling, or consumer-application testing. The 200% case changes the root font size and uses preview-scoped semantic token overrides to create a deterministic stress proxy; it is not a browser-zoom claim. See [Testing](testing.md) for exact commands, versions, and evidence boundaries.

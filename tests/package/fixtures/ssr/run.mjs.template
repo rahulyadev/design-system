@@ -1,0 +1,73 @@
+import assert from "node:assert/strict";
+
+assert.equal(typeof globalThis.window, "undefined");
+assert.equal(typeof globalThis.document, "undefined");
+assert.equal(typeof globalThis.localStorage, "undefined");
+assert.equal(typeof globalThis.matchMedia, "undefined");
+
+const React = await import("react");
+const { renderToString } = await import("react-dom/server");
+const { Badge, Button, Card, Container, Section, SectionHeading } =
+  await import("@rahulyadev/design-system");
+const {
+  ThemeProvider,
+  ThemeToggle,
+  createThemeBootstrapScript,
+  useTheme,
+} = await import("@rahulyadev/design-system/theme");
+
+assert.equal(typeof globalThis.window, "undefined");
+assert.equal(typeof globalThis.document, "undefined");
+
+function ThemeSnapshot() {
+  const { effectiveTheme, preference } = useTheme();
+
+  return React.createElement(
+    "output",
+    { "data-theme-snapshot": `${preference}:${effectiveTheme}` },
+    `${preference}:${effectiveTheme}`,
+  );
+}
+
+const markup = renderToString(
+  React.createElement(
+    ThemeProvider,
+    { storageKey: "packed-consumer-theme" },
+    React.createElement(
+      Container,
+      null,
+      React.createElement(
+        Section,
+        null,
+        React.createElement(SectionHeading, { title: "Server rendering" }),
+        React.createElement(
+          Card,
+          null,
+          React.createElement(Badge, null, "Packed"),
+          React.createElement(Button, null, "Render"),
+          React.createElement(ThemeToggle, null),
+          React.createElement(ThemeSnapshot, null),
+        ),
+      ),
+    ),
+  ),
+);
+
+assert.match(markup, /data-theme-snapshot="system:light"/);
+assert.match(markup, /class="ui-button/);
+assert.match(markup, /role="radiogroup"/);
+
+const unsafeStorageKey = "packed</script>\u2028consumer";
+const bootstrap = createThemeBootstrapScript({ storageKey: unsafeStorageKey });
+assert.ok(!bootstrap.includes("</script>"));
+assert.match(bootstrap, /packed\\u003c\/script>/);
+const htmlDocument = `<!doctype html><html><head><script nonce="fixture">${bootstrap}</script></head><body>${markup}</body></html>`;
+assert.match(htmlDocument, /^<!doctype html>/);
+
+console.log(
+  JSON.stringify({
+    bootstrapLength: bootstrap.length,
+    markupLength: markup.length,
+    serverSnapshot: "system:light",
+  }),
+);

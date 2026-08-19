@@ -6,7 +6,16 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
-    ignores: ["coverage/", "dist/", "node_modules/", "test-results/"],
+    ignores: [
+      ".artifacts/",
+      ".preview/",
+      ".tmp/",
+      "coverage/",
+      "dist/",
+      "node_modules/",
+      "playwright-report/",
+      "test-results/",
+    ],
   },
   eslint.configs.recommended,
   ...tseslint.configs.strictTypeChecked.map((config) => ({

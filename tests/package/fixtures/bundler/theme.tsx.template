@@ -1,0 +1,17 @@
+import {
+  ThemeProvider,
+  ThemeToggle,
+  createThemeBootstrapScript,
+} from "@rahulyadev/design-system/theme";
+
+const fixture = (
+  <ThemeProvider storageKey="packed-bundler-theme">
+    <ThemeToggle />
+  </ThemeProvider>
+);
+
+Object.defineProperty(document.body, "packedThemeFixture", { value: fixture });
+document.body.dataset["fixture"] = "theme";
+document.body.dataset["bootstrapLength"] = String(
+  createThemeBootstrapScript().length,
+);
