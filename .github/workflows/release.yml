@@ -111,4 +111,5 @@ jobs:
             .artifacts/*.tgz
             .artifacts/release-manifest.json
           if-no-files-found: error
+          include-hidden-files: true
           retention-days: 30
