@@ -8,7 +8,7 @@ Before any publication, confirm the package name, version, license, repository, 
 
 ## Bootstrap release candidate
 
-The first package version is `1.0.0-rc.0`. A new package cannot use its final trusted-publisher relationship until its package record exists, so this one bootstrap artifact is published interactively with npm 2FA, explicit public access, and the `next` dist-tag. Publish only the exact locally verified tarball. Confirm that `latest` does not point to the release candidate.
+The first package version is `1.0.0-rc.0`. A new package cannot use its final trusted-publisher relationship until its package record exists, so this one bootstrap artifact is published interactively with npm 2FA, explicit public access, and the `next` dist-tag. Publish only the exact locally verified tarball. The package registry initially also assigned `latest` to the bootstrap version; stable `1.0.0` publication explicitly reassigns `latest` while `next` continues to identify the release candidate.
 
 ## Stable staged publication
 

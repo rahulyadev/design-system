@@ -1,9 +1,9 @@
 # React design system
 
-`@rahulyadev/design-system` provides reusable React primitives, opt-in CSS, and domain-neutral theme utilities. Version `1.0.0-rc.0` is the bootstrap public release candidate; after registry publication it is installed exactly with:
+`@rahulyadev/design-system` provides reusable React primitives, opt-in CSS, and domain-neutral theme utilities. Install the stable release as an exact dependency:
 
 ```sh
-npm install --save-exact @rahulyadev/design-system@1.0.0-rc.0
+npm install --save-exact @rahulyadev/design-system@1.0.0
 ```
 
 Registry availability and tarball integrity must be verified before consumer adoption. The source and package use the MIT license. Development requires Node.js `24.19.0` and npm `11.17.0`.
@@ -17,14 +17,14 @@ npm ci
 npm run verify
 ```
 
-The full release-candidate gate includes packed React consumers and digest-pinned browser comparisons:
+The release gate includes packed React consumers and digest-pinned browser comparisons:
 
 ```sh
 npm run test:packed
 npm run test:browser:container
 npm run test:visual:container
-npm run verify:release -- --expected-version=1.0.0-rc.0
-npm run package:release-artifact -- --expected-version=1.0.0-rc.0
+npm run verify:release -- --expected-version=1.0.0
+npm run package:release-artifact -- --expected-version=1.0.0
 ```
 
 `test:packed` installs a generated tarball into clean React 18.3.1 and React 19.2.8 consumers. It checks strict NodeNext and Bundler compilation, SSR, public exports, CSS subpaths, bundle output, deep-import rejection, and one physical React and React DOM installation. Both consumers use TypeScript 6.0.3 and Vite 8.2.1.
@@ -75,6 +75,7 @@ Consumers retain routes, content, SEO, shell composition, authentication, APIs, 
 
 - [Consumer contract](docs/consumer-contract.md)
 - [Consumer onboarding](docs/consumer-onboarding.md)
+- [Stable 1.0.0 handoff](docs/handoffs/design-system-v1.0.0.md)
 - [Release process](docs/releasing.md)
 - [Styling](docs/styling.md)
 - [Theming](docs/theming.md)
