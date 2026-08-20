@@ -207,6 +207,20 @@ const packageJson = JSON.parse(
   await readFile(path.join(repositoryRoot, "package.json"), "utf8"),
 );
 assert(
+  packageJson.name === "@rahulyadev/design-system" &&
+    packageJson.version === "1.0.0-rc.0" &&
+    packageJson.private === undefined &&
+    packageJson.license === "MIT" &&
+    packageJson.type === "module",
+  "Release-candidate package identity differs.",
+);
+assert(
+  packageJson.repository?.type === "git" &&
+    packageJson.repository?.url ===
+      "https://github.com/rahulyadev/design-system",
+  "Repository metadata differs.",
+);
+assert(
   packageJson.dependencies === undefined ||
     Object.keys(packageJson.dependencies).length === 0,
   "Runtime dependencies must be absent.",

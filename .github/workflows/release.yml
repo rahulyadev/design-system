@@ -1,0 +1,114 @@
+name: Stage npm release
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_version:
+        description: Exact stable package version to stage
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: npm-stage-${{ inputs.expected_version }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  stage:
+    name: Verify and stage exact npm artifact
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out public main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.19.0
+          package-manager-cache: false
+          registry-url: https://registry.npmjs.org/
+      - name: Set and verify npm version
+        run: |
+          npm install --global npm@11.17.0
+          test "$(node --version)" = "v24.19.0"
+          test "$(npm --version)" = "11.17.0"
+      - name: Verify dispatch source and stable version
+        env:
+          EXPECTED_VERSION: ${{ inputs.expected_version }}
+        run: |
+          test "$GITHUB_REF" = "refs/heads/main"
+          actual_version="$(node --input-type=module -e "import packageJson from './package.json' with { type: 'json' }; process.stdout.write(packageJson.version)")"
+          test "$EXPECTED_VERSION" = "$actual_version"
+          case "$EXPECTED_VERSION" in
+            *-*) echo "Prerelease versions cannot use the stable staging workflow." >&2; exit 1 ;;
+          esac
+          test "$EXPECTED_VERSION" != "0.0.0-development"
+      - name: Require registry version absence
+        env:
+          EXPECTED_VERSION: ${{ inputs.expected_version }}
+          PACKAGE_NAME: "@rahulyadev/design-system"
+        run: |
+          set +e
+          output="$(npm view "$PACKAGE_NAME@$EXPECTED_VERSION" version --json 2>&1)"
+          status=$?
+          set -e
+          if test "$status" -eq 0; then
+            echo "Package version already exists: $PACKAGE_NAME@$EXPECTED_VERSION" >&2
+            exit 1
+          fi
+          if ! grep -Eq 'E404|404 Not Found' <<<"$output"; then
+            echo "Registry version check failed without an E404." >&2
+            exit 1
+          fi
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Run static package verification
+        run: npm run verify
+      - name: Test packed React consumers
+        run: npm run test:packed
+      - name: Verify release contract
+        env:
+          EXPECTED_VERSION: ${{ inputs.expected_version }}
+        run: npm run verify:release -- --expected-version="$EXPECTED_VERSION"
+      - name: Create exact release artifact
+        env:
+          EXPECTED_VERSION: ${{ inputs.expected_version }}
+        run: npm run package:release-artifact -- --expected-version="$EXPECTED_VERSION"
+      - name: Stage exact artifact through npm OIDC
+        run: |
+          tarball_path="$(node --input-type=module -e "import { readFileSync } from 'node:fs'; const manifest = JSON.parse(readFileSync('.artifacts/release-manifest.json', 'utf8')); process.stdout.write(manifest.tarball.path)")"
+          test -f "$tarball_path"
+          npm stage publish "$tarball_path" --access public --tag latest --provenance
+      - name: Write release evidence to job summary
+        run: |
+          node --input-type=module <<'NODE' >>"$GITHUB_STEP_SUMMARY"
+          import { readFileSync } from "node:fs";
+          const manifest = JSON.parse(
+            readFileSync(".artifacts/release-manifest.json", "utf8"),
+          );
+          console.log("## Staged npm package");
+          console.log(`- Version: ${manifest.package.version}`);
+          console.log(`- Source SHA: ${process.env.GITHUB_SHA}`);
+          console.log(`- Artifact SHA-256: ${manifest.tarball.sha256}`);
+          console.log(`- npm integrity: ${manifest.tarball.integrity}`);
+          console.log(`- Packed paths: ${manifest.tarball.fileCount}`);
+          NODE
+      - name: Upload verified release artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: npm-release-${{ inputs.expected_version }}
+          path: |
+            .artifacts/*.tgz
+            .artifacts/release-manifest.json
+          if-no-files-found: error
+          retention-days: 30

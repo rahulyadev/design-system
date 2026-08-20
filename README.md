@@ -1,10 +1,14 @@
 # React design system
 
-This repository contains reusable React primitives, opt-in CSS, and theme utilities for `@rahulyadev/design-system`. The package is currently private and unpublished at version `0.0.0-development`; registry installation is not available.
+`@rahulyadev/design-system` provides reusable React primitives, opt-in CSS, and domain-neutral theme utilities. Version `1.0.0-rc.0` is the bootstrap public release candidate; after registry publication it is installed exactly with:
 
-The source and package use the MIT license. Development requires Node.js `24.19.0` and npm `11.17.0`.
+```sh
+npm install --save-exact @rahulyadev/design-system@1.0.0-rc.0
+```
 
-## Development
+Registry availability and tarball integrity must be verified before consumer adoption. The source and package use the MIT license. Development requires Node.js `24.19.0` and npm `11.17.0`.
+
+## Development and verification
 
 Install the locked development dependencies and run the complete local verification:
 
@@ -13,65 +17,69 @@ npm ci
 npm run verify
 ```
 
-Useful individual commands include:
-
-```sh
-npm run typecheck
-npm run lint
-npm run test
-npm run build
-npm run verify:package
-npm run pack:dry-run
-```
-
-Packed-package and browser verification use these commands:
+The full release-candidate gate includes packed React consumers and digest-pinned browser comparisons:
 
 ```sh
 npm run test:packed
 npm run test:browser:container
 npm run test:visual:container
-npm run verify:full
+npm run verify:release -- --expected-version=1.0.0-rc.0
+npm run package:release-artifact -- --expected-version=1.0.0-rc.0
 ```
 
-`test:packed` creates a local tarball, installs it into clean React 18.3.1 and React 19.2.8 consumers, and checks strict NodeNext and Bundler compilation, SSR, public exports, CSS subpaths, bundle output, and single physical React and React DOM installations. Both consumers use TypeScript 6.0.3 and Vite 8.2.1. Generated tarballs, consumers, previews, browser reports, and test results are ignored under `.artifacts/`, `.tmp/`, `.preview/`, `playwright-report/`, and `test-results/`.
+`test:packed` installs a generated tarball into clean React 18.3.1 and React 19.2.8 consumers. It checks strict NodeNext and Bundler compilation, SSR, public exports, CSS subpaths, bundle output, deep-import rejection, and one physical React and React DOM installation. Both consumers use TypeScript 6.0.3 and Vite 8.2.1.
 
-The container commands use Playwright 1.62.1 from `mcr.microsoft.com/playwright:v1.62.1-noble@sha256:dcc5531e97840b9b5e794f2814476b21571c5124a3fca2267d73041f56e7580e`. The current local matrix covers Chromium 151.0.7922.34, Firefox 153.0, and WebKit 26.5. Correctly provisioned systems may use `npm run test:browser`, `npm run test:visual`, and `npm run test:visual:update` directly. Update snapshots only with `npm run test:visual:update:container`, inspect every required PNG, and require two immediate `npm run test:visual:container` comparisons before retaining a baseline.
+The container commands use Playwright 1.62.1 from `mcr.microsoft.com/playwright:v1.62.1-noble@sha256:dcc5531e97840b9b5e794f2814476b21571c5124a3fca2267d73041f56e7580e`. The matrix covers Chromium 151.0.7922.34, Firefox 153.0, and WebKit 26.5. Visual baselines are updated only with `npm run test:visual:update:container`, followed by inspection and two immediate comparison passes.
 
-## Public source API
+Generated tarballs, consumers, previews, reports, and results are ignored under `.artifacts/`, `.tmp/`, `.preview/`, `playwright-report/`, and `test-results/`.
+
+## Public API
 
 The package root exports `Badge`, `Button`, `Card`, `Container`, `IconButton`, `LinkButton`, `Section`, `SectionHeading`, `SkipLink`, and `VisuallyHidden`, together with their public prop types and finite option constants and types.
 
-Theme runtime is intentionally separate. `@rahulyadev/design-system/theme` exports the theme constants, bootstrap generator, provider, toggle, hook, storage utilities, theme resolution, root application helper, and their public types.
+Theme runtime is separate. `@rahulyadev/design-system/theme` exports theme constants, the bootstrap generator, provider, toggle, hook, storage utilities, theme resolution, the root application helper, and their public types.
 
-The JavaScript output is ESM-only. React and React DOM are peer dependencies; the package has no runtime dependencies.
+The JavaScript output is ESM-only. React and React DOM are peer dependencies with ranges `^18.3.1 || ^19.0.0`; the package has no runtime dependencies.
 
 ## Styling
 
-Consumers can import the combined stylesheet:
+Consumers may import the combined stylesheet:
 
 ```ts
 import "@rahulyadev/design-system/styles.css";
 ```
 
-Alternatively, import `tokens.css`, `base.css`, and `primitives.css` separately in that order. Do not use the combined and separate forms together. CSS is never imported automatically by JavaScript, and consumers own font loading and application-level overrides.
+Alternatively, import the separate stylesheets in this exact order:
 
-## Theme integration
+```ts
+import "@rahulyadev/design-system/tokens.css";
+import "@rahulyadev/design-system/base.css";
+import "@rahulyadev/design-system/primitives.css";
+```
 
-Generate the deterministic first-paint script with `createThemeBootstrapScript`, place it in the document head before theme-consuming stylesheets, and place `ThemeProvider` around the application. A custom storage key is supported; the bootstrap generator and provider must receive the same key.
+Do not use the combined and separate forms together. JavaScript never injects CSS. Consumer resets precede package CSS; consumer semantic-token overrides and application styles follow it. Consumers own font loading.
 
-The local packed preview uses a fixed nonce only for deterministic testing. Production consumers must generate a fresh nonce for each response or authorize the exact stable bootstrap text with a CSP hash.
+## Theme, SSR, and CSP
 
-## Ownership boundaries
+Generate the deterministic first-paint script with `createThemeBootstrapScript`, place it in the document head before theme-consuming stylesheets, and wrap the application in `ThemeProvider`. When using a consumer-specific storage key, pass the same value to the bootstrap generator and provider.
 
-This package owns only reusable primitives, their preserved CSS implementation, and theme behavior. Consumers retain routes, content, SEO, shell composition, authentication, APIs, infrastructure, deployment, and business components. Tailwind and other consumer frameworks are not package dependencies.
+The local packed preview uses a fixed nonce only for deterministic testing. Production consumers must generate a fresh nonce per response or authorize the exact stable bootstrap text with a CSP hash. Consumers own SSR document integration, CSP policy, and any narrowly scoped hydration handling.
+
+## Accessibility and ownership
+
+The package preserves native semantics, keyboard behavior, visible focus, reduced-motion behavior, forced-colors behavior, minimum target sizing, and theme-control labeling. Consumers remain responsible for accessible composition, content, headings, labels, route focus management, contrast after overrides, and application-level testing.
+
+Consumers retain routes, content, SEO, shell composition, authentication, APIs, infrastructure, deployment, and business components. Tailwind and other consumer frameworks are not package dependencies.
 
 ## Documentation
 
 - [Consumer contract](docs/consumer-contract.md)
+- [Consumer onboarding](docs/consumer-onboarding.md)
+- [Release process](docs/releasing.md)
 - [Styling](docs/styling.md)
 - [Theming](docs/theming.md)
 - [Accessibility](docs/accessibility.md)
 - [Testing](docs/testing.md)
 - [Extraction inventory](docs/extraction-inventory.md)
 
-Local packed-consumer, browser, accessibility-automation, and visual-comparison evidence does not establish registry availability, hosted workflow results, portfolio equivalence, provenance, publication, or release completion.
+Local verification does not establish registry availability, hosted-check success, trusted-publisher configuration, provenance, final stable publication, consumer deployment, or production equivalence.

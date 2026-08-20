@@ -12,10 +12,10 @@ const expectedThemeExport = {
 };
 
 describe("package metadata contract", () => {
-  it("uses the provisional private package identity", () => {
+  it("uses the public release-candidate package identity", () => {
     expect(packageJson.name).toBe("@rahulyadev/design-system");
-    expect(packageJson.version).toBe("0.0.0-development");
-    expect(packageJson.private).toBe(true);
+    expect(packageJson.version).toBe("1.0.0-rc.0");
+    expect("private" in packageJson).toBe(false);
     expect(packageJson.license).toBe("MIT");
     expect(packageJson.type).toBe("module");
     expect(packageJson.packageManager).toBe("npm@11.17.0");

@@ -2,14 +2,15 @@
 
 ## Unreleased
 
-- Established the repository foundation for a private, unpublished React package.
-- Extracted reusable styles, primitives, and theme utilities from the immutable source baseline.
-- Added domain-neutral, configurable theme persistence.
-- Added the initial package build, tests, export map, and engineering documentation.
-- Added tarball allowlist and integrity verification with clean React 18 and React 19 consumer fixtures.
-- Added strict NodeNext, Bundler, SSR, CSS-subpath, bundle-measurement, and duplicate-React checks against the packed artifact.
-- Added a server-rendered public-import-only preview with deterministic CSP, hydration, accessibility, responsive, keyboard, reduced-motion, forced-colors, and no-JavaScript coverage.
-- Added digest-pinned container commands for Chromium, Firefox, WebKit, and visual snapshot verification without host browser-library installation.
-- Added pull-request dependency review and separate local-equivalent verification and browser workflow definitions.
+No unreleased changes.
 
-The package remains private and unpublished. Registry, hosted workflow, portfolio-equivalence, provenance, publication, and release evidence remain unavailable.
+## 1.0.0-rc.0 - 2026-08-20
+
+- Prepared the bootstrap public release candidate with an explicit public-access package contract.
+- Preserved the extracted reusable styles, React primitives, and domain-neutral theme utilities without implementation or API changes.
+- Retained strict ESM-only exports, React peer dependencies, opt-in CSS, and zero runtime dependencies.
+- Added deterministic release metadata, tarball, registry-availability, declaration-path, and packed-allowlist verification.
+- Added a manually dispatched, stage-only npm workflow using GitHub Actions OIDC and immutable action references for the future stable release.
+- Documented manual semver release operations, staged approval, rollback, and consumer onboarding.
+
+The release candidate is published only after its source pull request and hosted checks pass. It uses the `next` dist-tag and does not represent the final stable release.

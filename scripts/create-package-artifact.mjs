@@ -19,7 +19,17 @@ const repositoryRoot = path.resolve(
   fileURLToPath(new URL("..", import.meta.url)),
 );
 const artifactsDirectory = path.resolve(repositoryRoot, ".artifacts");
-const manifestPath = path.join(artifactsDirectory, "manifest.json");
+const releaseMode = process.argv.includes("--release");
+const expectedVersionArgument = process.argv.find((argument) =>
+  argument.startsWith("--expected-version="),
+);
+const expectedVersion = expectedVersionArgument?.slice(
+  "--expected-version=".length,
+);
+const manifestPath = path.join(
+  artifactsDirectory,
+  releaseMode ? "release-manifest.json" : "manifest.json",
+);
 
 function assert(condition, message) {
   if (!condition) {
@@ -73,6 +83,10 @@ function assertSamePaths(actual, expected, description) {
 }
 
 assertSafeOwnedDirectory(artifactsDirectory, ".artifacts");
+assert(
+  !releaseMode || expectedVersion,
+  "Release artifacts require --expected-version=<version>.",
+);
 await rm(artifactsDirectory, { force: true, recursive: true });
 await mkdir(artifactsDirectory, { recursive: true });
 
@@ -177,7 +191,14 @@ try {
   const packageJson = JSON.parse(
     await readFile(path.join(extractedRoot, "package.json"), "utf8"),
   );
-  assert(packageJson.private === true, "Packed package must remain private.");
+  assert(
+    packageJson.private === undefined,
+    "Packed release package must not be private.",
+  );
+  assert(
+    !expectedVersion || packageJson.version === expectedVersion,
+    `Packed version differs from expected version: ${expectedVersion}`,
+  );
   assert(
     packageJson.dependencies === undefined ||
       Object.keys(packageJson.dependencies).length === 0,
@@ -249,7 +270,7 @@ const manifest = {
   package: {
     name: packResult.name,
     version: packResult.version,
-    private: true,
+    private: false,
   },
   tarball: {
     filename: packResult.filename,
