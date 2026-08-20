@@ -1,0 +1,97 @@
+{
+  "name": "@rahulyadev/design-system",
+  "version": "1.0.0-rc.0",
+  "description": "Reusable React primitives, styles, and theme utilities.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rahulyadev/design-system"
+  },
+  "packageManager": "npm@11.17.0",
+  "engines": {
+    "node": ">=24.19.0 <25",
+    "npm": ">=11.17.0 <12"
+  },
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./theme": {
+      "types": "./dist/theme/index.d.ts",
+      "import": "./dist/theme/index.js"
+    },
+    "./tokens.css": "./dist/styles/tokens.css",
+    "./base.css": "./dist/styles/base.css",
+    "./primitives.css": "./dist/styles/primitives.css",
+    "./styles.css": "./dist/styles/styles.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "node ./scripts/clean.mjs",
+    "build": "npm run clean && tsc -p tsconfig.build.json && node ./scripts/build-css.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings=0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "verify:package": "node ./scripts/verify-package.mjs",
+    "verify:release": "node ./scripts/verify-release.mjs",
+    "verify": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build && npm run verify:package",
+    "pack:dry-run": "npm pack --dry-run --json --loglevel=error",
+    "package:artifact": "npm run build && node ./scripts/create-package-artifact.mjs",
+    "package:release-artifact": "npm run build && node ./scripts/create-package-artifact.mjs --release",
+    "test:packed": "npm run package:artifact && node ./scripts/verify-packed-consumers.mjs",
+    "preview:build": "npm run package:artifact && node ./scripts/prepare-packed-preview.mjs",
+    "preview:serve": "node ./scripts/serve-packed-preview.mjs",
+    "test:browser": "npm run preview:build && PLAYWRIGHT_RESULT_FILE=test-results/browser-results.json PLAYWRIGHT_HTML_DIR=playwright-report/browser playwright test --grep-invert @visual",
+    "test:browser:container": "node ./scripts/run-playwright-container.mjs browser",
+    "test:visual": "PLAYWRIGHT_RESULT_FILE=test-results/visual-results.json PLAYWRIGHT_HTML_DIR=playwright-report/visual playwright test --project=chromium --grep @visual",
+    "test:visual:container": "node ./scripts/run-playwright-container.mjs visual",
+    "test:visual:update": "PLAYWRIGHT_RESULT_FILE=test-results/visual-update-results.json PLAYWRIGHT_HTML_DIR=playwright-report/visual-update playwright test --project=chromium --grep @visual --update-snapshots",
+    "test:visual:update:container": "node ./scripts/run-playwright-container.mjs visual-update",
+    "verify:full": "npm run verify && npm run test:packed && npm run test:browser:container && npm run test:visual:container"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1 || ^19.0.0",
+    "react-dom": "^18.3.1 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.62.1",
+    "@testing-library/dom": "10.4.1",
+    "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/react": "16.3.2",
+    "@testing-library/user-event": "14.6.4",
+    "@types/node": "24.13.3",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "eslint": "10.8.1",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "17.11.0",
+    "jsdom": "30.0.1",
+    "prettier": "3.9.6",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.67.0",
+    "vite": "8.2.1",
+    "vitest": "4.1.10"
+  }
+}

@@ -1,0 +1,8 @@
+import { createElement } from "react";
+
+import { Button, type ButtonProps } from "@rahulyadev/design-system";
+
+const props: ButtonProps = { children: "Button only", variant: "primary" };
+const fixture = createElement(Button, props);
+
+document.body.dataset["fixture"] = fixture.type === Button ? "button" : "unknown";

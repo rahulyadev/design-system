@@ -1,0 +1,41 @@
+import { renderToString } from "react-dom/server";
+
+import {
+  Badge,
+  Button,
+  Card,
+  Container,
+  Section,
+  SectionHeading,
+  type ButtonProps,
+} from "@rahulyadev/design-system";
+import {
+  ThemeProvider,
+  ThemeToggle,
+  createThemeBootstrapScript,
+  type ThemePreference,
+} from "@rahulyadev/design-system/theme";
+
+const preference: ThemePreference = "system";
+const buttonProps: ButtonProps = { children: "NodeNext", variant: "primary" };
+
+const markup = renderToString(
+  <ThemeProvider storageKey="packed-consumer-theme">
+    <Container>
+      <Section>
+        <SectionHeading title="Packed consumer" />
+        <Card>
+          <Badge>{preference}</Badge>
+          <Button {...buttonProps} />
+          <ThemeToggle />
+        </Card>
+      </Section>
+    </Container>
+  </ThemeProvider>,
+);
+
+createThemeBootstrapScript({ storageKey: "packed-consumer-theme" });
+void markup;
+
+// @ts-expect-error Package exports intentionally reject undeclared deep imports.
+void import("@rahulyadev/design-system/components/button");

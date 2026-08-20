@@ -1,0 +1,15 @@
+node_modules/
+dist/
+coverage/
+.artifacts/
+.tmp/
+.preview/
+playwright-report/
+test-results/
+.eslintcache
+.DS_Store
+*.local
+.env
+.env.*
+!.env.example
+*.tgz

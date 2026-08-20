@@ -1,0 +1,30 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { defineConfig } from "vite";
+
+const fixtureDirectory = path.dirname(fileURLToPath(import.meta.url));
+const entry = process.env["PACKED_FIXTURE_ENTRY"];
+const outputDirectory = process.env["PACKED_FIXTURE_OUTPUT"];
+
+if (!entry || !outputDirectory) {
+  throw new Error("PACKED_FIXTURE_ENTRY and PACKED_FIXTURE_OUTPUT are required.");
+}
+
+export default defineConfig({
+  build: {
+    assetsDir: "assets",
+    emptyOutDir: true,
+    minify: true,
+    outDir: outputDirectory,
+    rollupOptions: {
+      input: path.join(fixtureDirectory, entry),
+      output: {
+        entryFileNames: "entry.js",
+        assetFileNames: "[name][extname]",
+      },
+    },
+    sourcemap: false,
+  },
+  logLevel: "info",
+});

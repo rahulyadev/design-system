@@ -1,0 +1,3 @@
+import "@rahulyadev/design-system/styles.css";
+
+document.body.dataset["fixture"] = "styles";
