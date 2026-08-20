@@ -208,11 +208,11 @@ const packageJson = JSON.parse(
 );
 assert(
   packageJson.name === "@rahulyadev/design-system" &&
-    packageJson.version === "1.0.0-rc.0" &&
+    packageJson.version === "1.0.0" &&
     packageJson.private === undefined &&
     packageJson.license === "MIT" &&
     packageJson.type === "module",
-  "Release-candidate package identity differs.",
+  "Stable package identity differs.",
 );
 assert(
   packageJson.repository?.type === "git" &&

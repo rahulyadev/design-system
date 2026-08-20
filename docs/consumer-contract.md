@@ -3,14 +3,14 @@
 ## Package status
 
 - Name: `@rahulyadev/design-system`
-- Version: `1.0.0-rc.0`
-- Status: bootstrap public release candidate after registry publication
+- Version: `1.0.0`
+- Status: stable public release
 - License: MIT
 - Output: ESM only
 - React peer: `^18.3.1 || ^19.0.0`
 - React DOM peer: `^18.3.1 || ^19.0.0`
 
-The package has no runtime dependencies. Consumers must adopt an exact verified registry version rather than a range. The release candidate is installed with `npm install --save-exact @rahulyadev/design-system@1.0.0-rc.0` only after registry metadata and integrity are available.
+The package has no runtime dependencies. Consumers must adopt an exact verified registry version rather than a range. Install the stable package with `npm install --save-exact @rahulyadev/design-system@1.0.0` after verifying registry metadata, integrity, signatures, and provenance.
 
 ## Public API
 
