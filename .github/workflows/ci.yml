@@ -79,6 +79,8 @@ jobs:
       - name: Create package artifact
         run: npm run package:artifact
       - name: Run browser verification
+        env:
+          HOME: /root
         run: npm run test:browser
       - name: Compare visual snapshots
         run: npm run test:visual
