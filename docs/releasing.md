@@ -18,6 +18,14 @@ The npm trusted publisher must identify repository `rahulyadev/design-system` an
 
 After approval, verify registry metadata, `latest` and `next`, tarball equality, React 18 and React 19 consumers, signatures, provenance source repository, provenance source commit, workflow identity, and transparency-log attestations.
 
+## Consumer proof and rollout
+
+Before a behavioral package release, test the real packed `.tgz` in the originating application and record the result in the release evidence. Package implementation leaves the package version unchanged; semver selection and version mutation occur only in the separately authorized release task.
+
+After publication, update the originating application to the exact verified registry version first. Update each other affected consumer sequentially, preserving an application rollback and a package rollback at every step. Consumers remain on their exact verified versions; they do not automatically follow npm `latest`, and unaffected consumers may wait for scheduled maintenance.
+
+Documentation-only lifecycle changes do not trigger npm releases. Update [the verified consumer registry](consumers.md) only after the consumer's exact adoption, verification, and versioned handoff are complete.
+
 ## Rollback policy
 
 Before publication, rollback is the previous `main` source commit. After release-candidate publication, leave it under `next` and correct source through a new pull request. Reject a mismatched pending stage. After stable publication, do not overwrite or unpublish the version; stop consumer adoption and prepare a separately authorized patch release if a defect is found. Consumer applications roll back to their prior source commit or prior exact package version.

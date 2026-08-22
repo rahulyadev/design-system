@@ -2,6 +2,8 @@
 
 This document is the canonical process for adding, changing, deprecating, or removing a public component, theme control, component style, or related public contract. Complete the applicable requirements before implementation and stop when a required contract cannot be preserved or verified.
 
+Component-level work follows this document. Promotion from an application and every consumer rollout additionally follow the [multi-application lifecycle](ecosystem-lifecycle.md). Work originating in a consumer requires a [reusable-capability proposal](proposals/reusable-capability-template.md) before package implementation.
+
 ## Scope qualification
 
 Before implementation, provide written answers to all of these questions:

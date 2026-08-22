@@ -8,6 +8,17 @@ Describe the reusable problem, consumers, scope, changed paths, and known limita
 - Proposed semver impact:
 - Confirmation that package version is unchanged outside an authorized release task:
 
+## Ecosystem lifecycle
+
+- Originating application or `None`:
+- Verified consumer baseline:
+- Affected consumers:
+- Lifecycle phase:
+- Packed-artifact proof:
+- Consumer handoff:
+- Consumer registry update:
+- Sequential rollout or `Not applicable — reason`:
+
 ## Public API
 
 - Public API diff:
