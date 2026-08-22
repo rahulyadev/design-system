@@ -1,6 +1,13 @@
 # Repository guidance
 
 - Before editing components, theme runtime, CSS, public exports, package metadata, preview fixtures, or related tests, read and follow `docs/component-development.md`.
+- Before any consumer or cross-repository task, read and follow `docs/ecosystem-lifecycle.md`.
+- Do not assume a consumer repository's state. Require a supplied verified baseline or a versioned adoption handoff before acting.
+- Work on only one originating application at a time. Do not update multiple consumers implicitly.
+- Do not list planned applications as consumers.
+- Do not inspect or modify Tourney or another future application unless Rahul explicitly starts that project and supplies its verified repository baseline.
+- Package implementation does not change the package version. Versioning and release remain separately authorized tasks.
+- A cross-repository final report must include lifecycle-phase evidence, affected consumers, packed-artifact proof when applicable, rollout status, rollback, and handoff requirements.
 - Apply the guide's change classification and required test tier.
 - Do not update snapshots until semantic checks pass; manually inspect every changed PNG and require the guide's comparison passes.
 - A component task's final report must include the evidence required by the guide.

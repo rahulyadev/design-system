@@ -6,7 +6,7 @@
 npm install --save-exact @rahulyadev/design-system@1.0.0
 ```
 
-Registry availability and tarball integrity must be verified before consumer adoption. The source and package use the MIT license. Development requires Node.js `24.19.0` and npm `11.17.0`.
+`@rahulyadev/design-system@1.0.0` is the current stable public registry release. Its registry metadata, tarball integrity, signatures, and provenance must be verified for each consumer adoption. The source and package use the MIT license. Development requires Node.js `24.19.0` and npm `11.17.0`.
 
 ## Development and verification
 
@@ -75,6 +75,10 @@ Consumers retain routes, content, SEO, shell composition, authentication, APIs, 
 
 - [Contributing](CONTRIBUTING.md)
 - [Component development and change policy](docs/component-development.md)
+- [Multi-application lifecycle](docs/ecosystem-lifecycle.md)
+- [Verified consumer registry](docs/consumers.md)
+- [Consumer-adoption handoff template](docs/handoffs/consumer-adoption-template.md)
+- [Reusable-capability proposal template](docs/proposals/reusable-capability-template.md)
 - [Consumer contract](docs/consumer-contract.md)
 - [Consumer onboarding](docs/consumer-onboarding.md)
 - [Stable 1.0.0 handoff](docs/handoffs/design-system-v1.0.0.md)
@@ -85,4 +89,4 @@ Consumers retain routes, content, SEO, shell composition, authentication, APIs, 
 - [Testing](docs/testing.md)
 - [Extraction inventory](docs/extraction-inventory.md)
 
-Local verification does not establish registry availability, hosted-check success, trusted-publisher configuration, provenance, final stable publication, consumer deployment, or production equivalence.
+Stable `1.0.0` publication and provenance are established release facts. Local verification remains scoped: it does not establish future registry availability, hosted-check success for another change, consumer deployment, or production equivalence.
