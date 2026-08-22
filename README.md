@@ -73,6 +73,8 @@ Consumers retain routes, content, SEO, shell composition, authentication, APIs, 
 
 ## Documentation
 
+- [Contributing](CONTRIBUTING.md)
+- [Component development and change policy](docs/component-development.md)
 - [Consumer contract](docs/consumer-contract.md)
 - [Consumer onboarding](docs/consumer-onboarding.md)
 - [Stable 1.0.0 handoff](docs/handoffs/design-system-v1.0.0.md)

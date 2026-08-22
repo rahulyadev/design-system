@@ -1,5 +1,9 @@
 # Repository guidance
 
+- Before editing components, theme runtime, CSS, public exports, package metadata, preview fixtures, or related tests, read and follow `docs/component-development.md`.
+- Apply the guide's change classification and required test tier.
+- Do not update snapshots until semantic checks pass; manually inspect every changed PNG and require the guide's comparison passes.
+- A component task's final report must include the evidence required by the guide.
 - This package owns reusable React primitives, opt-in CSS, and domain-neutral theme utilities only.
 - The immutable portfolio source baseline is tag `v1.0.0` at commit `0bfde1c170e2b27ec92d98504b6fa25d66543bed`.
 - Preserve source visual values, DOM semantics, keyboard behavior, focus behavior, and accessibility contracts.
